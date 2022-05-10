@@ -14,7 +14,7 @@ export default Title;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 32,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#370617',
     textTransform: 'uppercase',
