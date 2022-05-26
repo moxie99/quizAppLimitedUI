@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from 'react-native';
 import React from 'react';
 import Title from '../Components/Title';
 

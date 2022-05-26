@@ -4,6 +4,8 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  ActivityIndicator,
+  ImageBackground,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Title from '../Components/Title';
@@ -84,105 +86,121 @@ const Quiz = ({navigation}) => {
   useEffect(() => {
     getQuiz();
   }, []);
+
+  const image = {
+    uri: 'https://images.pexels.com/photos/7092545/pexels-photo-7092545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  };
   return (
     <SafeAreaView>
-      <View style={styles.quizcontainer}>
-        {isLoading ? (
-          <View>
-            <LottieView
-              source={{
-                uri: 'https://assets9.lottiefiles.com/packages/lf20_a2chheio.json',
-              }}
-              colorFilters={[
-                {
-                  keypath: 'button',
-                  color: '#F00000',
-                },
-                {
-                  keypath: 'Sending Loader',
-                  color: '#F00000',
-                },
-              ]}
-              autoPlay
-              loop
-            />
-          </View>
-        ) : (
-          questions && (
-            <View style={styles.parent}>
-              <View style={styles.quizquestion}>
-                <Title
-                  title={decodeURIComponent(
-                    `Q${questionNo + 1}. ${questions[questionNo].question}`,
+      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <View style={styles.quizcontainer}>
+          {isLoading ? (
+            // <View>
+            //   <LottieView
+            //     source={{
+            //       uri: 'https://assets9.lottiefiles.com/packages/lf20_a2chheio.json',
+            //     }}
+            //     colorFilters={[
+            //       {
+            //         keypath: 'button',
+            //         color: '#F00000',
+            //       },
+            //       {
+            //         keypath: 'Sending Loader',
+            //         color: '#F00000',
+            //       },
+            //     ]}
+            //     autoPlay
+            //     loop
+            //   />
+            //   <Text>Loading.....</Text>
+            // </View>
+            <View style={[styles.container, styles.horizontal]}>
+              <ActivityIndicator />
+              <ActivityIndicator size="large" />
+              <ActivityIndicator size="small" color="#0000ff" />
+              <ActivityIndicator size="large" color="#00ff00" />
+            </View>
+          ) : (
+            questions && (
+              <View style={styles.parent}>
+                <View style={styles.quizquestion}>
+                  <Title
+                    title={decodeURIComponent(
+                      `Q${questionNo + 1}. ${questions[questionNo].question}`,
+                    )}
+                  />
+                </View>
+                <View style={styles.quizoption}>
+                  <TouchableOpacity
+                    onPress={() => handleSelectedOption(options[0])}
+                    style={styles.quizOptionBtn}>
+                    <Text style={styles.quizOption__text}>
+                      {decodeURIComponent(options[0])}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => handleSelectedOption(options[1])}
+                    style={styles.quizOptionBtn}>
+                    <Text style={styles.quizOption__text}>
+                      {decodeURIComponent(options[1])}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => handleSelectedOption(options[2])}
+                    style={styles.quizOptionBtn}>
+                    <Text style={styles.quizOption__text}>
+                      {decodeURIComponent(options[2])}
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => handleSelectedOption(options[3])}
+                    style={styles.quizOptionBtn}>
+                    <Text style={styles.quizOption__text}>
+                      {decodeURIComponent(options[3])}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.quizbtn}>
+                  {questionNo > 0 && (
+                    <TouchableOpacity
+                      style={styles.quizBtn}
+                      onPress={handlePrev}>
+                      <Text style={styles.quizBtn__text}>Previous</Text>
+                    </TouchableOpacity>
                   )}
-                />
-              </View>
-              <View style={styles.quizoption}>
-                <TouchableOpacity
-                  onPress={() => handleSelectedOption(options[0])}
-                  style={styles.quizOptionBtn}>
-                  <Text style={styles.quizOption__text}>
-                    {decodeURIComponent(options[0])}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => handleSelectedOption(options[1])}
-                  style={styles.quizOptionBtn}>
-                  <Text style={styles.quizOption__text}>
-                    {decodeURIComponent(options[1])}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => handleSelectedOption(options[2])}
-                  style={styles.quizOptionBtn}>
-                  <Text style={styles.quizOption__text}>
-                    {decodeURIComponent(options[2])}
-                  </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => handleSelectedOption(options[3])}
-                  style={styles.quizOptionBtn}>
-                  <Text style={styles.quizOption__text}>
-                    {decodeURIComponent(options[3])}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.quizbtn}>
-                {questionNo > 0 && (
-                  <TouchableOpacity style={styles.quizBtn} onPress={handlePrev}>
-                    <Text style={styles.quizBtn__text}>Previous</Text>
-                  </TouchableOpacity>
-                )}
-
-                <TouchableOpacity
-                  style={styles.quizBtn}
-                  onPress={() =>
-                    navigation.navigate('Result', {
-                      score: score,
-                    })
-                  }>
-                  <Text style={styles.quizBtn__text}>END</Text>
-                </TouchableOpacity>
-                {questionNo < numberOfQuestions - 1 && (
-                  <TouchableOpacity style={styles.quizBtn} onPress={handleNext}>
-                    <Text style={styles.quizBtn__text}>Next</Text>
-                  </TouchableOpacity>
-                )}
-                {questionNo === numberOfQuestions - 1 && (
                   <TouchableOpacity
                     style={styles.quizBtn}
-                    onPress={handleShowResult}>
-                    <Text style={styles.quizBtn__text}>Submit</Text>
+                    onPress={() =>
+                      navigation.navigate('Result', {
+                        score: score,
+                      })
+                    }>
+                    <Text style={styles.quizBtn__text}>END</Text>
                   </TouchableOpacity>
-                )}
+                  {questionNo < numberOfQuestions - 1 && (
+                    <TouchableOpacity
+                      style={styles.quizBtn}
+                      onPress={handleNext}>
+                      <Text style={styles.quizBtn__text}>Next</Text>
+                    </TouchableOpacity>
+                  )}
+                  {questionNo === numberOfQuestions - 1 && (
+                    <TouchableOpacity
+                      style={styles.quizBtn}
+                      onPress={handleShowResult}>
+                      <Text style={styles.quizBtn__text}>Submit</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
               </View>
-            </View>
-          )
-        )}
-      </View>
+            )
+          )}
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -244,5 +262,14 @@ const styles = StyleSheet.create({
   },
   question: {
     fontSize: 12,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
   },
 });
